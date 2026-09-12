@@ -2,13 +2,8 @@ name: Build and Release
 
 on:
   push:
-    tags:
-      - "v*"
+    branches: [main]
   workflow_dispatch:
-    inputs:
-      tag:
-        description: "Release tag to create (e.g. v1.0.0)"
-        required: true
 
 permissions:
   contents: write
@@ -19,11 +14,37 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: "10.0.x"
+
+      - name: Determine next version
+        id: version
+        shell: bash
+        run: |
+          git fetch --tags --force
+          latest=$(git tag -l "v*.*.*" | sort -V | tail -n1)
+          if [ -z "$latest" ]; then
+            new_tag="v1.0.0"
+          else
+            ver=${latest#v}
+            IFS='.' read -r major minor patch <<< "$ver"
+            new_tag="v${major}.${minor}.$((patch + 1))"
+          fi
+          echo "Latest tag: ${latest:-none}, new tag: $new_tag"
+          echo "tag=$new_tag" >> "$GITHUB_OUTPUT"
+
+      - name: Create and push tag
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git tag "${{ steps.version.outputs.tag }}"
+          git push origin "${{ steps.version.outputs.tag }}"
 
       - name: Restore
         run: dotnet restore MonitorMux.csproj
@@ -38,19 +59,9 @@ jobs:
         shell: pwsh
         run: Compress-Archive -Path publish\MonitorMux.exe -DestinationPath MonitorMux-win-x64.zip
 
-      - name: Determine tag
-        id: tag
-        shell: bash
-        run: |
-          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
-            echo "name=${{ inputs.tag }}" >> "$GITHUB_OUTPUT"
-          else
-            echo "name=${{ github.ref_name }}" >> "$GITHUB_OUTPUT"
-          fi
-
       - name: Create Release
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: ${{ steps.tag.outputs.name }}
+          tag_name: ${{ steps.version.outputs.tag }}
           files: MonitorMux-win-x64.zip
           generate_release_notes: true
