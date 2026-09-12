@@ -53,6 +53,7 @@ public partial class Form1 : Form
         btnReadCurrent.Click += (_, _) => ReadCurrent();
         btnHdmi1.Click += (_, _) => SwitchTo(txtHdmi1Code);
         btnHdmi2.Click += (_, _) => SwitchTo(txtHdmi2Code);
+        btnUsbc.Click += (_, _) => SwitchTo(txtUsbcCode);
         cmbMonitors.SelectedIndexChanged += (_, _) => LoadProfileForSelection();
     }
 
@@ -78,6 +79,7 @@ public partial class Form1 : Form
         menu.Items.Add(new ToolStripSeparator());
         menu.Items.Add("Switch to HDMI 1", null, (_, _) => SwitchTo(txtHdmi1Code));
         menu.Items.Add("Switch to HDMI 2", null, (_, _) => SwitchTo(txtHdmi2Code));
+        menu.Items.Add("Switch to USB-C / DP", null, (_, _) => SwitchTo(txtUsbcCode));
         menu.Items.Add("Read Current", null, (_, _) => ReadCurrent());
         menu.Items.Add(new ToolStripSeparator());
 
@@ -155,6 +157,7 @@ public partial class Form1 : Form
         var profile = _config.GetProfile(monitor.FriendlyName);
         txtHdmi1Code.Text = "0x" + profile.Hdmi1Code.ToString("X2");
         txtHdmi2Code.Text = "0x" + profile.Hdmi2Code.ToString("X2");
+        txtUsbcCode.Text = "0x" + profile.UsbcCode.ToString("X2");
         lblCurrentValue.Text = "(unread)";
     }
 
@@ -207,11 +210,12 @@ public partial class Form1 : Form
         if (monitor == null)
             return;
 
-        if (TryParseCode(txtHdmi1Code.Text, out uint c1) && TryParseCode(txtHdmi2Code.Text, out uint c2))
+        if (TryParseCode(txtHdmi1Code.Text, out uint c1) && TryParseCode(txtHdmi2Code.Text, out uint c2) && TryParseCode(txtUsbcCode.Text, out uint c3))
         {
             var profile = _config.GetProfile(monitor.FriendlyName);
             profile.Hdmi1Code = (int)c1;
             profile.Hdmi2Code = (int)c2;
+            profile.UsbcCode = (int)c3;
             _config.Save();
         }
     }

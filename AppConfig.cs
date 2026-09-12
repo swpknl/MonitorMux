@@ -7,6 +7,10 @@ public class MonitorProfile
     // Spec-default MCCS input-source codes; overridden per-monitor once learned via "Read Current".
     public int Hdmi1Code { get; set; } = 0x11;
     public int Hdmi2Code { get; set; } = 0x12;
+
+    // USB-C (DP Alt Mode) monitors typically report this input under the standard
+    // DisplayPort-1 VCP code, but this varies by manufacturer just like HDMI 1/2.
+    public int UsbcCode { get; set; } = 0x0F;
 }
 
 public class AppConfig

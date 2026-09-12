@@ -26,6 +26,9 @@ partial class Form1
     private Label lblHdmi2;
     private TextBox txtHdmi2Code;
     private Button btnHdmi2;
+    private Label lblUsbc;
+    private TextBox txtUsbcCode;
+    private Button btnUsbc;
     private Label lblHint;
     private Label lblStatus;
 
@@ -44,6 +47,9 @@ partial class Form1
         lblHdmi2 = new Label();
         txtHdmi2Code = new TextBox();
         btnHdmi2 = new Button();
+        lblUsbc = new Label();
+        txtUsbcCode = new TextBox();
+        btnUsbc = new Button();
         lblHint = new Label();
         lblStatus = new Label();
         grpSwitch.SuspendLayout();
@@ -95,9 +101,12 @@ partial class Form1
         grpSwitch.Controls.Add(lblHdmi2);
         grpSwitch.Controls.Add(txtHdmi2Code);
         grpSwitch.Controls.Add(btnHdmi2);
+        grpSwitch.Controls.Add(lblUsbc);
+        grpSwitch.Controls.Add(txtUsbcCode);
+        grpSwitch.Controls.Add(btnUsbc);
         grpSwitch.Controls.Add(lblHint);
         grpSwitch.Location = new Point(16, 108);
-        grpSwitch.Size = new Size(632, 290);
+        grpSwitch.Size = new Size(632, 344);
         grpSwitch.Text = "Switch Input";
 
         // lblHdmi1
@@ -106,15 +115,15 @@ partial class Form1
         lblHdmi1.Text = "HDMI 1 code:";
 
         // txtHdmi1Code
-        txtHdmi1Code.Location = new Point(150, 40);
+        txtHdmi1Code.Location = new Point(180, 40);
         txtHdmi1Code.Size = new Size(90, 27);
         txtHdmi1Code.Text = "0x11";
 
         // btnHdmi1
         btnHdmi1.AutoSize = true;
         btnHdmi1.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-        btnHdmi1.MinimumSize = new Size(320, 40);
-        btnHdmi1.Location = new Point(260, 36);
+        btnHdmi1.MinimumSize = new Size(330, 40);
+        btnHdmi1.Location = new Point(290, 36);
         btnHdmi1.Text = "Switch to HDMI 1";
         btnHdmi1.UseVisualStyleBackColor = true;
 
@@ -124,35 +133,53 @@ partial class Form1
         lblHdmi2.Text = "HDMI 2 code:";
 
         // txtHdmi2Code
-        txtHdmi2Code.Location = new Point(150, 92);
+        txtHdmi2Code.Location = new Point(180, 92);
         txtHdmi2Code.Size = new Size(90, 27);
         txtHdmi2Code.Text = "0x12";
 
         // btnHdmi2
         btnHdmi2.AutoSize = true;
         btnHdmi2.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-        btnHdmi2.MinimumSize = new Size(320, 40);
-        btnHdmi2.Location = new Point(260, 88);
+        btnHdmi2.MinimumSize = new Size(330, 40);
+        btnHdmi2.Location = new Point(290, 88);
         btnHdmi2.Text = "Switch to HDMI 2";
         btnHdmi2.UseVisualStyleBackColor = true;
 
+        // lblUsbc
+        lblUsbc.AutoSize = true;
+        lblUsbc.Location = new Point(20, 148);
+        lblUsbc.Text = "USB-C / DP code:";
+
+        // txtUsbcCode
+        txtUsbcCode.Location = new Point(180, 144);
+        txtUsbcCode.Size = new Size(90, 27);
+        txtUsbcCode.Text = "0x0F";
+
+        // btnUsbc
+        btnUsbc.AutoSize = true;
+        btnUsbc.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+        btnUsbc.MinimumSize = new Size(330, 40);
+        btnUsbc.Location = new Point(290, 140);
+        btnUsbc.Text = "Switch to USB-C / DP";
+        btnUsbc.UseVisualStyleBackColor = true;
+
         // lblHint
-        lblHint.Location = new Point(20, 150);
+        lblHint.Location = new Point(20, 202);
         lblHint.Size = new Size(592, 126);
         lblHint.Font = new Font("Segoe UI", 9F, FontStyle.Italic);
         lblHint.ForeColor = SystemColors.GrayText;
         lblHint.Text = "If a switch does nothing or picks the wrong port, use the monitor's own OSD " +
             "menu to select HDMI 1 by hand, then click \"Read Current\" above to learn its " +
-            "real code, and type that value into the box here. Repeat for HDMI 2.";
+            "real code, and type that value into the box here. Repeat for HDMI 2 and USB-C / DP.";
 
         // lblStatus
-        lblStatus.Location = new Point(16, 412);
+        lblStatus.Location = new Point(16, 466);
         lblStatus.Size = new Size(632, 70);
         lblStatus.Text = "";
 
         // Form1
         AutoScaleMode = AutoScaleMode.Font;
-        ClientSize = new Size(664, 496);
+        ClientSize = new Size(664, 550);
         Controls.Add(lblMonitor);
         Controls.Add(cmbMonitors);
         Controls.Add(btnRefresh);

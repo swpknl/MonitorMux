@@ -1,13 +1,15 @@
 # MonitorMux
 
-A lightweight Windows tray app for switching a monitor's input source (e.g. HDMI 1 ↔ HDMI 2) without touching the monitor's physical buttons.
+A lightweight Windows tray app for switching a monitor's input source (e.g. HDMI 1 ↔ HDMI 2 ↔ USB-C/DP) without touching the monitor's physical buttons.
+
+**Windows only.** MonitorMux is built on Windows Forms and the Windows Monitor Configuration API (`dxva2.dll`), neither of which exist on macOS or Linux. There is no Mac or Linux version, and none is planned — see [How it works](#how-it-works) for why.
 
 ## Features
 
-- Switch monitor input source from the tray menu or a small window
+- Switch monitor input source — HDMI 1, HDMI 2, or USB-C/DisplayPort — from the tray menu or a small window
 - Works with any DDC/CI-capable monitor (it's a VESA standard, not brand-specific) — used day-to-day with both BenQ and Acer displays
 - Auto-detects connected monitors and reads their real EDID model name (via WMI), not just the generic Windows driver label
-- Learns and saves per-monitor input codes, since the exact VCP value for "HDMI 1" vs "HDMI 2" isn't standardized across manufacturers
+- Learns and saves per-monitor input codes, since the exact VCP value for "HDMI 1" vs "HDMI 2" vs "USB-C/DP" isn't standardized across manufacturers
 - Lives in the system tray; optional launch at Windows startup
 - Single-instance guard, minimize/close to tray instead of quitting
 
@@ -41,9 +43,11 @@ Output lands in `bin/Release/net10.0-windows/win-x64/publish/MonitorMux.exe`.
 1. Launch `MonitorMux.exe`.
 2. Pick your monitor from the dropdown.
 3. Click **Read Current** to see its current input code.
-4. Click **Switch to HDMI 1** / **Switch to HDMI 2**.
+4. Click **Switch to HDMI 1** / **Switch to HDMI 2** / **Switch to USB-C / DP**.
 
-The default codes (`0x11` / `0x12`) match the VESA spec, but some monitors use different values. If a switch does nothing or selects the wrong port: use the monitor's own OSD to manually select HDMI 1, click **Read Current** to learn its real code, and type that value into the HDMI 1 box here. Repeat for HDMI 2 — the app remembers these per monitor.
+The default codes (`0x11` / `0x12` / `0x0F`) match the VESA spec, but some monitors use different values — this is especially common for USB-C, since MCCS never standardized a dedicated "USB-C" input code, so manufacturers reuse the DisplayPort code or pick their own. If a switch does nothing or selects the wrong port: use the monitor's own OSD to manually select that input, click **Read Current** to learn its real code, and type that value into the matching box here. Repeat for each input — the app remembers these per monitor.
+
+Note that USB-C only works as a video input if the monitor's USB-C port supports DisplayPort Alt Mode and the connected cable/port on the PC side supports DP Alt Mode — plain USB-C data/charging ports won't carry a display signal at all.
 
 Right-click the tray icon to switch inputs directly, or to toggle **Start with Windows**.
 
