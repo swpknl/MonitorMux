@@ -95,7 +95,11 @@ public partial class Form1 : Form
             ContextMenuStrip = menu,
             Visible = true,
         };
-        _trayIcon.DoubleClick += (_, _) => ShowFromTray();
+        _trayIcon.MouseClick += (_, e) =>
+        {
+            if (e.Button == MouseButtons.Left)
+                ShowFromTray();
+        };
     }
 
     private void ShowFromTray()
