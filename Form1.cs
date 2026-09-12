@@ -95,7 +95,11 @@ public partial class Form1 : Form
             ContextMenuStrip = menu,
             Visible = true,
         };
-        _trayIcon.DoubleClick += (_, _) => ShowFromTray();
+        _trayIcon.MouseClick += (_, e) =>
+        {
+            if (e.Button == MouseButtons.Left)
+                ShowFromTray();
+        };
     }
 
     private void ShowFromTray()
@@ -104,6 +108,10 @@ public partial class Form1 : Form
         WindowState = FormWindowState.Normal;
         Activate();
     }
+
+    // Entry point for a second launch attempt (e.g. a pinned taskbar icon) to ask this
+    // already-running instance to restore its window. See Program.Main.
+    public void RequestShow() => ShowFromTray();
 
     private void ExitApp()
     {
