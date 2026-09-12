@@ -109,6 +109,10 @@ public partial class Form1 : Form
         Activate();
     }
 
+    // Entry point for a second launch attempt (e.g. a pinned taskbar icon) to ask this
+    // already-running instance to restore its window. See Program.Main.
+    public void RequestShow() => ShowFromTray();
+
     private void ExitApp()
     {
         _allowExit = true;
