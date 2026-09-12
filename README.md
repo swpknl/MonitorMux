@@ -54,4 +54,4 @@ Right-click the tray icon to switch inputs directly, or to toggle **Start with W
 
 ## License
 
-No license has been chosen yet — all rights reserved by default until one is added.
+[MIT](LICENSE)
