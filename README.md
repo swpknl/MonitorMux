@@ -20,7 +20,7 @@ MonitorMux uses the Windows Monitor Configuration API (`dxva2.dll`) to send DDC/
 ## Requirements
 
 - Windows 10/11
-- .NET 10 Desktop Runtime (or the SDK, if building from source)
+- No .NET runtime install needed — the published exe is self-contained (the .NET 10 SDK is only needed if building from source)
 - A monitor with DDC/CI enabled (usually in the OSD under a "System" menu)
 - **A direct connection to the GPU.** Docking stations, USB hubs, and KVM switches very commonly block DDC/CI signaling even though the video image passes through fine — this is a hardware/firmware limitation of the dock, not something software can work around.
 
@@ -33,7 +33,7 @@ dotnet build -c Release
 ## Publishing a single-file exe
 
 ```
-dotnet publish -c Release -r win-x64 --self-contained false -p:PublishSingleFile=true
+dotnet publish -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true
 ```
 
 Output lands in `bin/Release/net10.0-windows/win-x64/publish/MonitorMux.exe`.
