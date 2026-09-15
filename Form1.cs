@@ -59,12 +59,17 @@ public partial class Form1 : Form
 
     // Standard trick to start with no visible window/taskbar flash when launched at logon:
     // Application.Run() shows the form via this override, which we redirect to stay hidden.
-    // OnLoad still fires normally, so RefreshMonitors() runs either way.
+    // CreateControl() refuses to create the handle while Visible is still false, so the handle
+    // would otherwise never exist — and a later BeginInvoke (e.g. from Program.cs restoring the
+    // window on a second launch) throws on a control with no handle, taking down the whole
+    // process. CreateHandle() forces the native window to exist without making it visible.
     protected override void SetVisibleCore(bool value)
     {
         if (_startInTray && !_initialVisibilitySuppressed)
         {
             _initialVisibilitySuppressed = true;
+            if (!IsHandleCreated)
+                CreateHandle();
             base.SetVisibleCore(false);
             return;
         }
